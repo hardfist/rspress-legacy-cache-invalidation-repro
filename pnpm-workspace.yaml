@@ -4,4 +4,5 @@ packages:
 patchedDependencies:
   '@rsbuild/core@2.1.13': patches/@rsbuild__core@2.1.13.patch
 
+minimumReleaseAge: 0
 verifyDepsBeforeRun: false
