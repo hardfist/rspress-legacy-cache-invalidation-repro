@@ -88,20 +88,23 @@ function median(values) {
   return sorted[Math.floor(sorted.length / 2)];
 }
 
-async function runVariant(variant) {
+async function createCacheDirectory(variant, sample) {
   const cacheRoot = path.join(root, '.benchmark', 'cache');
   await fs.mkdir(cacheRoot, { recursive: true });
-  const cacheDirectory = await fs.mkdtemp(path.join(cacheRoot, `${variant}-`));
-  const measurements = [runBuild(variant, cacheDirectory, 'cold')];
+  return fs.mkdtemp(path.join(cacheRoot, `${variant}-${sample}-`));
+}
 
-  for (let index = 1; index <= 3; index += 1) {
-    measurements.push(runBuild(variant, cacheDirectory, `warm-${index}`));
-  }
+async function runVariant(variant) {
+  const warmCacheDirectory = await createCacheDirectory(variant, 'warm');
+  const measurements = [
+    runBuild(variant, warmCacheDirectory, 'cold-warm'),
+    runBuild(variant, warmCacheDirectory, 'warm-1'),
+  ];
 
-  for (let index = 1; index <= 3; index += 1) {
-    await touchMdx();
-    measurements.push(runBuild(variant, cacheDirectory, `touch-${index}`));
-  }
+  const touchCacheDirectory = await createCacheDirectory(variant, 'touch');
+  measurements.push(runBuild(variant, touchCacheDirectory, 'cold-touch'));
+  await touchMdx();
+  measurements.push(runBuild(variant, touchCacheDirectory, 'touch-1'));
 
   const warm = measurements
     .filter(item => item.label.startsWith('warm-'))
@@ -112,8 +115,11 @@ async function runVariant(variant) {
 
   return {
     variant,
-    cacheDirectory: path.relative(root, cacheDirectory),
-    cacheBytes: await directorySize(cacheDirectory),
+    cacheDirectories: {
+      warm: path.relative(root, warmCacheDirectory),
+      touch: path.relative(root, touchCacheDirectory),
+    },
+    cacheBytes: await directorySize(warmCacheDirectory),
     medians: {
       warmRspressMs: median(warm),
       touchRspressMs: median(touch),

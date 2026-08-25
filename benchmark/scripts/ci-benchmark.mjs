@@ -92,7 +92,7 @@ ${failureRows}`);
         cacheBytes: [],
       };
       for (const measurement of result.measurements) {
-        if (measurement.label === 'cold') {
+        if (measurement.label.startsWith('cold-')) {
           current.cold.push(measurement.rspressMs);
         } else if (measurement.label.startsWith('warm-')) {
           current.warm.push(measurement.rspressMs);
@@ -133,7 +133,8 @@ ${failureRows}`);
 - Rspack: \`${reports[0].rspack}\`
 - Node: \`${reports[0].node}\`
 - Pages: ${reports[0].pages} generated MDX files
-- Method: two runs in opposite order; every build uses a fresh Node.js process
+- Method: two runs in opposite order; each warm/touch sample is the first reuse of a fresh cold cache, in a fresh Node.js process
+- Temporary workaround: this canary can leave a \`.meta\` file pointing to a removed \`.sst\` file on the second cache reopen, so the benchmark does not reopen the same cache twice
 ${failureNote}
 | Variant | Cold median | Unchanged warm median | Warm process wall | Identical-touch median | Cache size |
 | --- | ---: | ---: | ---: | ---: | ---: |
