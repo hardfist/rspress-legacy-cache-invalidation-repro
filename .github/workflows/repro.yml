@@ -1,4 +1,4 @@
-name: Reproduce MDX loader cache miss
+name: Reproduce legacy cache invalidation
 
 on:
   push:

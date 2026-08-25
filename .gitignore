@@ -1,5 +1,4 @@
 node_modules/
 doc_build/
 .cache/
-.probe/
 .DS_Store

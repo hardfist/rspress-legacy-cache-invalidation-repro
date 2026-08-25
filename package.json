@@ -1,8 +1,7 @@
 {
-  "name": "rspress-mdx-persistent-cache-miss-repro",
-  "version": "0.0.0",
+  "name": "rspress-legacy-cache-invalidation-repro",
   "private": true,
-  "description": "Minimal reproduction of the Rspress MDX loader missing Rspack's persistent loader cache",
+  "description": "Minimal reproduction of Rspress invalidating Rspack's legacy persistent cache on every warm build",
   "type": "module",
   "packageManager": "pnpm@11.22.0",
   "engines": {
