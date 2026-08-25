@@ -1,0 +1,21 @@
+{
+  "name": "rspress-mdx-persistent-cache-miss-repro",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Minimal reproduction of the Rspress MDX loader missing Rspack's persistent loader cache",
+  "type": "module",
+  "packageManager": "pnpm@11.22.0",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "rspress build",
+    "repro": "node scripts/repro.mjs",
+    "repro:fixed": "node scripts/repro.mjs --fixed"
+  },
+  "devDependencies": {
+    "@rspack/core": "npm:@rspack-canary/core@2.2.0-canary-12bde9b1-20260824102525",
+    "@rspack-canary/core": "2.2.0-canary-12bde9b1-20260824102525",
+    "@rspress/core": "2.0.19"
+  }
+}
