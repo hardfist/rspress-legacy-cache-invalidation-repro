@@ -1,5 +1,10 @@
 # Rspress legacy persistent cache 每次启动都失效的问题
 
+CI 中的 `benchmark` job 会在隔离的 `benchmark/` 子项目里临时通过
+`version: 0.0.0` 绕过该 invalidation，对比 legacy cache 和四阶段全部开启的
+new cache。两轮反向顺序的 warm build、进程耗时和缓存体积会写入 GitHub Actions
+的 job summary，原始 JSON 会作为 artifact 上传。
+
 这个仓库复现了一个 Rspress 默认配置下的 persistent cache 问题：源码没有变化，
 但在新的进程中再次执行 `rspress build` 时，Rspack 仍会认为 build dependency
 发生修改，清空整个 legacy persistent cache。

@@ -1,0 +1,21 @@
+{
+  "name": "rspress-persistent-cache-benchmark",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.22.0",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "generate": "node scripts/generate.mjs",
+    "bench": "pnpm generate && node scripts/benchmark.mjs all",
+    "bench:reverse": "pnpm generate && node scripts/benchmark.mjs new-full,legacy",
+    "bench:ci": "pnpm generate && node scripts/ci-benchmark.mjs"
+  },
+  "devDependencies": {
+    "@rspack/core": "npm:@rspack-canary/core@2.2.0-canary-12bde9b1-20260824102525",
+    "@rspack-canary/core": "2.2.0-canary-12bde9b1-20260824102525",
+    "@rspress/core": "2.0.19"
+  }
+}

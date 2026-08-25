@@ -19,3 +19,31 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm repro
       - run: pnpm repro:fixed
+
+  benchmark:
+    name: Compare legacy and full new cache
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: benchmark
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.22.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: benchmark/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+      - name: Run cache comparison
+        run: pnpm bench:ci
+      - name: Upload raw benchmark results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: persistent-cache-benchmark-${{ github.run_id }}
+          path: benchmark/.benchmark/results/*.json
+          if-no-files-found: warn
+          retention-days: 14

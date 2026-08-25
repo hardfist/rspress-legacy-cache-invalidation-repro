@@ -1,0 +1,8 @@
+packages:
+  - .
+
+minimumReleaseAge: 0
+verifyDepsBeforeRun: false
+
+patchedDependencies:
+  '@rsbuild/core@2.1.13': patches/@rsbuild__core@2.1.13.patch

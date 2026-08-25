@@ -1,0 +1,5 @@
+/.benchmark/
+/.cache/
+/doc_build/
+/docs/
+/node_modules/
