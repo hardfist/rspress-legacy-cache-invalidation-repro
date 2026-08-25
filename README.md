@@ -6,7 +6,7 @@ persistent cache on every new process**, even when no source file changed.
 It pins:
 
 - `@rspress/core@2.0.19`
-- `@rspack/core@2.2.0-canary-12bde9b1-20260824102525`
+- `@rspack/core@2.1.10`
 - Node.js 22 and pnpm 11.22.0
 
 ## Reproduce
@@ -50,12 +50,9 @@ Adding a root package version only masks the issue: the malformed dependency is
 then incorrectly tracked using the application's version. The proper fix is to
 convert the `file:` URL with `fileURLToPath` before passing it to Rspack.
 
-The checked-in Rsbuild patch only makes Rsbuild load the pinned canary package;
-it does not modify cache behavior.
-
 Relevant upstream code:
 
 - [Rspress supplies the `file:` URL](https://github.com/web-infra-dev/rspress/blob/e4a85b918e47eb6cf200d7ff9850568b99f39dd5/packages/core/src/node/initRsbuild.ts#L269-L272)
-- [Rspack resolves every dependency as a path](https://github.com/web-infra-dev/rspack/blob/12bde9b1dcb672105776120b81c8ff382d0378f5/packages/rspack/src/config/normalization.ts#L306-L308)
-- [A failed snapshot strategy validates as modified](https://github.com/web-infra-dev/rspack/blob/12bde9b1dcb672105776120b81c8ff382d0378f5/crates/rspack_core/src/cache/persistent/snapshot/strategy/mod.rs#L319-L328)
-- [Invalid build dependencies call `invalidate`](https://github.com/web-infra-dev/rspack/blob/12bde9b1dcb672105776120b81c8ff382d0378f5/crates/rspack_core/src/cache/persistent/context.rs#L99-L115), which [calls `reset_all`](https://github.com/web-infra-dev/rspack/blob/12bde9b1dcb672105776120b81c8ff382d0378f5/crates/rspack_core/src/cache/persistent/context.rs#L145-L154)
+- [Rspack resolves every dependency as a path](https://github.com/web-infra-dev/rspack/blob/v2.1.10/packages/rspack/src/config/normalization.ts#L304-L306)
+- [A failed snapshot strategy validates as modified](https://github.com/web-infra-dev/rspack/blob/v2.1.10/crates/rspack_core/src/cache/persistent/snapshot/strategy/mod.rs#L319-L328)
+- [Invalid build dependencies call `invalidate`](https://github.com/web-infra-dev/rspack/blob/v2.1.10/crates/rspack_core/src/cache/persistent/context.rs#L99-L115), which [calls `reset_all`](https://github.com/web-infra-dev/rspack/blob/v2.1.10/crates/rspack_core/src/cache/persistent/context.rs#L145-L154)

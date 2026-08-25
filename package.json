@@ -13,8 +13,7 @@
     "repro:fixed": "node scripts/repro.mjs --fixed"
   },
   "devDependencies": {
-    "@rspack/core": "npm:@rspack-canary/core@2.2.0-canary-12bde9b1-20260824102525",
-    "@rspack-canary/core": "2.2.0-canary-12bde9b1-20260824102525",
+    "@rspack/core": "2.1.10",
     "@rspress/core": "2.0.19"
   }
 }
